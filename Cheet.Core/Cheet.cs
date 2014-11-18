@@ -27,7 +27,7 @@
 
         public virtual void Register(string sequence)
         {
-            Register(sequence, () => { });
+            Register(sequence, new CheetCallbacks<T>());
         }
 
         public virtual void Register(string sequence, Action done)

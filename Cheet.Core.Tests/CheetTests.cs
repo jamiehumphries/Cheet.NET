@@ -22,6 +22,19 @@
         }
 
         [Test]
+        public void Sequences_can_be_registered_without_specifying_callbacks()
+        {
+            // Given
+            cheet.Register("a b c");
+
+            // When
+            cheet.SendSequence("a b c");
+
+            // Then
+            // Nothing bad happens.
+        }
+
+        [Test]
         public void Parameterless_callback_invoked_when_sequence_done()
         {
             // Given
