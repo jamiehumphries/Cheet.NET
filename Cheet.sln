@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheet.Core", "Cheet.Core\Cheet.Core.csproj", "{87537354-0C89-4FB8-9597-04C251E12743}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheet.Core.Tests", "Cheet.Core.Tests\Cheet.Core.Tests.csproj", "{08CBD083-C83F-42FE-BF18-865DB86D7989}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{87537354-0C89-4FB8-9597-04C251E12743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87537354-0C89-4FB8-9597-04C251E12743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87537354-0C89-4FB8-9597-04C251E12743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08CBD083-C83F-42FE-BF18-865DB86D7989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08CBD083-C83F-42FE-BF18-865DB86D7989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08CBD083-C83F-42FE-BF18-865DB86D7989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08CBD083-C83F-42FE-BF18-865DB86D7989}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
