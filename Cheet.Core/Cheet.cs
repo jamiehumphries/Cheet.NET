@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     public interface ICheet<T>
     {
@@ -129,7 +130,7 @@
 
         private string NormalizeSequence(string sequence)
         {
-            return sequence ?? "";
+            return sequence == null ? "" : Regex.Replace(sequence, " +", " ").Trim(' ');
         }
 
         private void TrackSequence(string sequence)

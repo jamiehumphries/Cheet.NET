@@ -415,6 +415,51 @@
             // Nothing bad happens.
         }
 
+        [TestCase("a  b  c")]
+        [TestCase("   a b   c  ")]
+        public void Additional_spaces_are_ignored_when_registering(string sequence)
+        {
+            // Given
+            cheet.Register(sequence, callbacks.Done);
+
+            // When
+            cheet.SendSequence("a b c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
+        }
+
+        [TestCase("a  b  c")]
+        [TestCase("   a b   c  ")]
+        public void Additional_spaces_are_ignored_when_disabling(string sequence)
+        {
+            // Given
+            cheet.Register("a b c", callbacks.Done);
+
+            // When
+            cheet.SendSequence("a");
+            cheet.Reset(sequence);
+            cheet.SendSequence("b c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustNotHaveHappened();
+        }
+
+        [TestCase("a  b  c")]
+        [TestCase("   a b   c  ")]
+        public void Additional_spaces_are_ignored_when_resetting(string sequence)
+        {
+            // Given
+            cheet.Register("a b c", callbacks.Done);
+
+            // When
+            cheet.Disable(sequence);
+            cheet.SendSequence("a b c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustNotHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
