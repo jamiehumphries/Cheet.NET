@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public interface ITestCallbacks<T>
+    public interface ITestCallbacks<in T>
     {
         void ParamterlessDone();
         void Done(string str, T[] seq);
