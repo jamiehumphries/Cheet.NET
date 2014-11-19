@@ -23,7 +23,7 @@
             }
         }
 
-        internal void MoveNext()
+        private void MoveNext()
         {
             completedIndex++;
             if (completedIndex == sequence.Length - 1)
@@ -32,12 +32,7 @@
             }
         }
 
-        internal void Reset()
-        {
-            completedIndex = -1;
-        }
-
-        internal void OnDone()
+        private void OnDone()
         {
             if (Done != null)
             {

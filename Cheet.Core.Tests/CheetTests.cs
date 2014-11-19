@@ -2,23 +2,27 @@
 {
     using FakeItEasy;
     using NUnit.Framework;
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
 
-    public interface ITestCallbacks
+    public interface ITestCallbacks<T>
     {
         void Done();
+        void Done(string str, T[] seq);
     }
 
     [TestFixture]
     public class CheetTests
     {
         private Cheet cheet;
-        private ITestCallbacks callbacks;
+        private ITestCallbacks<TestKey> callbacks;
 
         [SetUp]
         public void SetUp()
         {
             cheet = new Cheet();
-            callbacks = A.Fake<ITestCallbacks>();
+            callbacks = A.Fake<ITestCallbacks<TestKey>>();
         }
 
         [Test]
@@ -62,9 +66,35 @@
         }
     }
 
-    public class Cheet : Cheet<int>
+    public class TestKey
     {
-        public void SendSequence(string sequence)
+        private readonly string keyName;
+
+        public TestKey(string keyName)
+        {
+            this.keyName = keyName;
+        }
+
+        // ReSharper disable once CSharpWarnings::CS0659
+        public override bool Equals(object obj)
+        {
+            var otherKey = obj as TestKey;
+            return otherKey != null && keyName.Equals(otherKey.keyName);
+        }
+    }
+
+    internal static class Keys
+    {
+        internal static Expression<Func<TestKey[], bool>> For(string sequence)
+        {
+            var expectedKeys = sequence.Split(' ').Select(k => new TestKey(k));
+            return actualKeys => expectedKeys.SequenceEqual(actualKeys);
+        }
+    }
+
+    internal class Cheet : Cheet<TestKey>
+    {
+        internal void SendSequence(string sequence)
         {
             var keyNames = sequence.Split(' ');
             foreach (var keyName in keyNames)
@@ -73,9 +103,9 @@
             }
         }
 
-        protected override int GetKey(string keyName)
+        protected override TestKey GetKey(string keyName)
         {
-            return keyName.GetHashCode();
+            return new TestKey(keyName);
         }
     }
 }
