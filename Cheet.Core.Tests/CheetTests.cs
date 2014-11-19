@@ -511,11 +511,20 @@
             this.keyName = keyName;
         }
 
-        // ReSharper disable once CSharpWarnings::CS0659
+        public override int GetHashCode()
+        {
+            return (keyName != null ? keyName.GetHashCode() : 0);
+        }
+
         public override bool Equals(object obj)
         {
             var otherKey = obj as TestKey;
             return otherKey != null && keyName.Equals(otherKey.keyName);
+        }
+
+        protected bool Equals(TestKey other)
+        {
+            return string.Equals(keyName, other.keyName);
         }
     }
 
