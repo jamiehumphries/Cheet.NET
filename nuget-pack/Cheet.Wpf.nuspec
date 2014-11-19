@@ -10,7 +10,7 @@
     <licenseUrl>https://raw.githubusercontent.com/jamiehumphries/Cheet.NET/master/LICENSE.md</licenseUrl>
     <iconUrl>https://raw.githubusercontent.com/jamiehumphries/Cheet.NET/master/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>easy easter eggs (konami code, etc) for your .NET projects.</description>
+    <description>easy easter eggs (konami code, etc) for your WPF projects.</description>
     <tags>cheet easter eggs konami code wpf keyboard shortcut</tags>
     <copyright>Copyright 2014</copyright>
   </metadata>
