@@ -64,7 +64,7 @@
             cheet.SendSequence(sequence);
 
             // Then
-            A.CallTo(() => callbacks.Done("a b c", A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
         }
 
         [TestCase("a b")]
@@ -79,7 +79,27 @@
             cheet.SendSequence(sequence);
 
             // Then
-            A.CallTo(() => callbacks.Done(null, null)).WithAnyArguments().MustNotHaveHappened();
+            A.CallTo(DoneCallbackFor("a b c")).WithAnyArguments().MustNotHaveHappened();
+        }
+
+        [TestCase("a b c a b c", 2)]
+        [TestCase("1 2 a b c 3 4 a b c 5 6", 2)]
+        [TestCase("a b c a b c a b c", 3)]
+        public void Can_complete_sequences_multiple_times(string sequence, int numberOfCompletions)
+        {
+            // Given
+            cheet.Register("a b c", (str, seq) => callbacks.Done(str, seq));
+
+            // When
+            cheet.SendSequence(sequence);
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened(Repeated.Exactly.Times(numberOfCompletions));
+        }
+
+        private Expression<Action> DoneCallbackFor(string sequence)
+        {
+            return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
         }
     }
 
