@@ -38,35 +38,48 @@
             // Nothing bad happens.
         }
 
-        [TestCase("a b c")]
-        [TestCase("x y a b c")]
-        [TestCase("a b c 1 2")]
-        [TestCase("x y a b c 1 2")]
-        public void Parameterless_callback_invoked_when_sequence_done(string successfulSequence)
+        [Test]
+        public void Sequences_can_be_registered_with_parameterless_done_callback()
         {
             // Given
             cheet.Register("a b c", () => callbacks.Done());
 
             // When
-            cheet.SendSequence(successfulSequence);
+            cheet.SendSequence("a b c");
 
             // Then
             A.CallTo(() => callbacks.Done()).MustHaveHappened();
         }
 
+        [TestCase("a b c")]
+        [TestCase("x y a b c")]
+        [TestCase("a b c 1 2")]
+        [TestCase("x y a b c 1 2")]
+        public void Done_callback_invoked_when_sequence_done(string sequence)
+        {
+            // Given
+            cheet.Register("a b c", (str, seq) => callbacks.Done(str, seq));
+
+            // When
+            cheet.SendSequence(sequence);
+
+            // Then
+            A.CallTo(() => callbacks.Done("a b c", A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
+        }
+
         [TestCase("a b")]
         [TestCase("a b d")]
         [TestCase("a a b b c c")]
-        public void Paramterless_callback_not_invoked_if_sequence_incomplete_or_missed(string failedSequence)
+        public void Done_callback_not_invoked_if_sequence_incomplete_or_missed(string sequence)
         {
             // Given
-            cheet.Register("a b c", () => callbacks.Done());
+            cheet.Register("a b c", (str, seq) => callbacks.Done(str, seq));
 
             // When
-            cheet.SendSequence(failedSequence);
+            cheet.SendSequence(sequence);
 
             // Then
-            A.CallTo(() => callbacks.Done()).MustNotHaveHappened();
+            A.CallTo(() => callbacks.Done(null, null)).WithAnyArguments().MustNotHaveHappened();
         }
     }
 
