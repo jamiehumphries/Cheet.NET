@@ -7,10 +7,10 @@
 
     public interface ICheet<T>
     {
-        void Register(string sequence);
-        void Register(string sequence, Action done);
-        void Register(string sequence, Action<string, T[]> done);
-        void Register(string sequence, CheetCallbacks<T> callbacks);
+        void Map(string sequence);
+        void Map(string sequence, Action done);
+        void Map(string sequence, Action<string, T[]> done);
+        void Map(string sequence, CheetCallbacks<T> callbacks);
         void Done(Action<string, T[]> callback);
         void Next(Action<string, T, int, T[]> callback);
         void Fail(Action<string, T[]> callback);
@@ -32,22 +32,22 @@
 
         private event SequenceEventHandler SequenceFail;
 
-        public virtual void Register(string sequence)
+        public virtual void Map(string sequence)
         {
-            Register(sequence, new CheetCallbacks<T>());
+            Map(sequence, new CheetCallbacks<T>());
         }
 
-        public virtual void Register(string sequence, Action done)
+        public virtual void Map(string sequence, Action done)
         {
-            Register(sequence, (str, seq) => done());
+            Map(sequence, (str, seq) => done());
         }
 
-        public virtual void Register(string sequence, Action<string, T[]> done)
+        public virtual void Map(string sequence, Action<string, T[]> done)
         {
-            Register(sequence, new CheetCallbacks<T> { Done = done });
+            Map(sequence, new CheetCallbacks<T> { Done = done });
         }
 
-        public virtual void Register(string sequence, CheetCallbacks<T> callbacks)
+        public virtual void Map(string sequence, CheetCallbacks<T> callbacks)
         {
             sequence = NormalizeSequence(sequence);
             TrackSequence(sequence);

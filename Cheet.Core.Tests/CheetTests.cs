@@ -29,10 +29,10 @@
         }
 
         [Test]
-        public void Sequences_can_be_registered_without_specifying_callbacks()
+        public void Sequences_can_be_mapped_without_specifying_callbacks()
         {
             // Given
-            cheet.Register("a b c");
+            cheet.Map("a b c");
 
             // When
             cheet.SendSequence("a b c");
@@ -42,10 +42,10 @@
         }
 
         [Test]
-        public void Sequences_can_be_registered_with_parameterless_done_callback()
+        public void Sequences_can_be_mapped_with_parameterless_done_callback()
         {
             // Given
-            cheet.Register("a b c", callbacks.ParamterlessDone);
+            cheet.Map("a b c", callbacks.ParamterlessDone);
 
             // When
             cheet.SendSequence("a b c");
@@ -61,7 +61,7 @@
         public void Done_callback_invoked_when_sequence_done(string sequence)
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence(sequence);
@@ -76,7 +76,7 @@
         public void Done_callback_not_invoked_if_sequence_incomplete_or_missed(string sequence)
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence(sequence);
@@ -91,7 +91,7 @@
         public void Can_complete_sequences_multiple_times(string sequence, int numberOfCompletions)
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence(sequence);
@@ -104,7 +104,7 @@
         public void Completions_do_not_overlap()
         {
             // Given
-            cheet.Register("a a a", callbacks.Done);
+            cheet.Map("a a a", callbacks.Done);
 
             // When
             cheet.SendSequence("a a a a a");
@@ -114,11 +114,11 @@
         }
 
         [Test]
-        public void Can_register_multiple_done_callbacks_to_sequence()
+        public void Can_map_multiple_done_callbacks_to_sequence()
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
-            cheet.Register("a b c", callbacks.ParamterlessDone);
+            cheet.Map("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.ParamterlessDone);
 
             // When
             cheet.SendSequence("a b c");
@@ -132,7 +132,7 @@
         public void Next_callback_invoked_for_each_match_along_sequence()
         {
             // Given
-            cheet.Register("a b c", new TestCheetCallbacks { Next = callbacks.Next });
+            cheet.Map("a b c", new TestCheetCallbacks { Next = callbacks.Next });
 
             // When
             cheet.SendSequence("a b c");
@@ -147,7 +147,7 @@
         public void Next_callbacks_reset_when_sequence_fails()
         {
             // Given
-            cheet.Register("a b c", new TestCheetCallbacks { Next = callbacks.Next });
+            cheet.Map("a b c", new TestCheetCallbacks { Next = callbacks.Next });
 
             // When
             cheet.SendSequence("a x a");
@@ -161,7 +161,7 @@
         public void Fail_callback_called_when_in_progress_sequence_fails(string sequence)
         {
             // Given
-            cheet.Register("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
+            cheet.Map("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
 
             // When
             cheet.SendSequence(sequence);
@@ -174,7 +174,7 @@
         public void Fail_callback_not_invoked_if_sequence_not_in_progress()
         {
             // Given
-            cheet.Register("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
+            cheet.Map("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
 
             // When
             cheet.SendSequence("x");
@@ -187,7 +187,7 @@
         public void Fail_callback_invoked_for_multiple_failures()
         {
             // Given
-            cheet.Register("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
+            cheet.Map("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
 
             // When
             cheet.SendSequence("a b x a x");
@@ -200,8 +200,8 @@
         public void Can_subscribe_to_all_done_callbacks()
         {
             // Given
-            cheet.Register("a b c");
-            cheet.Register("x y z");
+            cheet.Map("a b c");
+            cheet.Map("x y z");
 
             // When
             cheet.Done(callbacks.Done);
@@ -216,8 +216,8 @@
         public void Can_subscribe_to_all_next_callbacks()
         {
             // Given
-            cheet.Register("a b c");
-            cheet.Register("x y z");
+            cheet.Map("a b c");
+            cheet.Map("x y z");
 
             // When
             cheet.Next(callbacks.Next);
@@ -232,8 +232,8 @@
         public void Can_subscribe_to_all_fail_callbacks()
         {
             // Given
-            cheet.Register("a b c");
-            cheet.Register("x y z");
+            cheet.Map("a b c");
+            cheet.Map("x y z");
 
             // When
             cheet.Fail(callbacks.Fail);
@@ -248,8 +248,8 @@
         public void Separate_sequences_can_overlap()
         {
             // Given
-            cheet.Register("a b c");
-            cheet.Register("b c d");
+            cheet.Map("a b c");
+            cheet.Map("b c d");
 
             // When
             cheet.Done(callbacks.Done);
@@ -261,10 +261,10 @@
         }
 
         [Test]
-        public void Can_register_for_all_callbacks_on_a_sequence()
+        public void Can_map_all_callbacks_on_a_sequence()
         {
             // Given
-            cheet.Register("a b c", new TestCheetCallbacks { Done = callbacks.Done, Next = callbacks.Next, Fail = callbacks.Fail });
+            cheet.Map("a b c", new TestCheetCallbacks { Done = callbacks.Done, Next = callbacks.Next, Fail = callbacks.Fail });
 
             // When
             cheet.SendSequence("a b c a b x");
@@ -281,7 +281,7 @@
         public void Disabled_sequences_do_not_fire_further_callbacks()
         {
             // Given
-            cheet.Register("a b c", new TestCheetCallbacks { Done = callbacks.Done, Next = callbacks.Next, Fail = callbacks.Fail });
+            cheet.Map("a b c", new TestCheetCallbacks { Done = callbacks.Done, Next = callbacks.Next, Fail = callbacks.Fail });
 
             // When
             cheet.SendSequence("a");
@@ -300,11 +300,11 @@
         public void Disabled_sequences_can_be_reenabled()
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
             cheet.Disable("a b c");
 
             // When
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
             cheet.SendSequence("a b c");
 
             // Then
@@ -315,7 +315,7 @@
         public void Done_callback_not_fired_if_sequence_reset_during_input()
         {
             // Given
-            cheet.Register("a b c");
+            cheet.Map("a b c");
             cheet.Done(callbacks.Done);
 
             // When
@@ -331,7 +331,7 @@
         public void Resetting_prevents_fail_callbacks()
         {
             // Given
-            cheet.Register("a b c");
+            cheet.Map("a b c");
             cheet.Fail(callbacks.Fail);
 
             // When
@@ -347,8 +347,8 @@
         public void Only_requested_sequence_is_reset()
         {
             // Given
-            cheet.Register("a b c");
-            cheet.Register("a b d");
+            cheet.Map("a b c");
+            cheet.Map("a b d");
             cheet.Done(callbacks.Done);
 
             // When
@@ -364,10 +364,10 @@
         [TestCase("")]
         [TestCase("   ")]
         [TestCase(null)]
-        public void Null_or_empty_sequences_are_ignored_when_registering(string sequence)
+        public void Null_or_empty_sequences_are_ignored_when_mapping(string sequence)
         {
             // Given
-            cheet.Register(sequence);
+            cheet.Map(sequence);
 
             // When
             cheet.SendSequence("a");
@@ -397,7 +397,7 @@
         }
 
         [Test]
-        public void Disabling_unregistered_sequence_is_not_problematic()
+        public void Disabling_unmapped_sequence_is_not_problematic()
         {
             // When
             cheet.Disable("a b c");
@@ -407,7 +407,7 @@
         }
 
         [Test]
-        public void Resetting_unregistered_sequence_is_not_problematic()
+        public void Resetting_unmapped_sequence_is_not_problematic()
         {
             // When
             cheet.Reset("a b c");
@@ -418,10 +418,10 @@
 
         [TestCase("a  b  c")]
         [TestCase("   a b   c  ")]
-        public void Additional_spaces_are_ignored_when_registering(string sequence)
+        public void Additional_spaces_are_ignored_when_mapping(string sequence)
         {
             // Given
-            cheet.Register(sequence, callbacks.Done);
+            cheet.Map(sequence, callbacks.Done);
 
             // When
             cheet.SendSequence("a b c");
@@ -435,7 +435,7 @@
         public void Additional_spaces_are_ignored_when_disabling(string sequence)
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence("a");
@@ -451,7 +451,7 @@
         public void Additional_spaces_are_ignored_when_resetting(string sequence)
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
 
             // When
             cheet.Disable(sequence);
@@ -465,17 +465,17 @@
         public void Sequence_key_names_mapped_to_null_key_cause_exception()
         {
             // When
-            Action registeringNullKey = () => cheet.Register("nullkey");
+            Action mappingNullKey = () => cheet.Map("nullkey");
 
             // Then
-            registeringNullKey.ShouldThrow<ArgumentException>().WithMessage("Could not map key named 'nullkey'.");
+            mappingNullKey.ShouldThrow<ArgumentException>().WithMessage("Could not map key named 'nullkey'.");
         }
 
         [Test]
         public void Received_null_keys_cause_sequence_reset()
         {
             // Given
-            cheet.Register("a b c", callbacks.Done);
+            cheet.Map("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence("a b");

@@ -43,7 +43,7 @@
             var uiElement = new UIElement();
             uiElement.PreviewKeyDown += cheet.OnKeyDown;
             var sequenceDone = false;
-            cheet.Register("a b c", () => { sequenceDone = true; });
+            cheet.Map("a b c", () => { sequenceDone = true; });
 
             // When
             uiElement.SimulateKeyPresses(Key.A, Key.B, Key.C);
