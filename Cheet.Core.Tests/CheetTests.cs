@@ -182,6 +182,19 @@
             A.CallTo(FailCallbackFor("a b c")).WithAnyArguments().MustNotHaveHappened();
         }
 
+        [Test]
+        public void Fail_callback_invoked_for_multiple_failures()
+        {
+            // Given
+            cheet.Register("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
+
+            // When
+            cheet.SendSequence("a b x a x");
+
+            // Then
+            A.CallTo(FailCallbackFor("a b c")).MustHaveHappened(Repeated.Exactly.Twice);
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
