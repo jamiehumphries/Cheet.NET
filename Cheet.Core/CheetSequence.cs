@@ -31,7 +31,7 @@
             }
         }
 
-        private void Reset()
+        internal void Reset()
         {
             completedIndex = -1;
         }

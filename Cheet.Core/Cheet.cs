@@ -106,7 +106,12 @@
 
         public virtual void Reset(string sequence)
         {
-            throw new NotImplementedException();
+            CheetSequence<T> cheetSequence;
+            cheetSequences.TryGetValue(sequence, out cheetSequence);
+            if (cheetSequence != null)
+            {
+                cheetSequence.Reset();
+            }
         }
 
         protected virtual void OnKeyDown(T key)

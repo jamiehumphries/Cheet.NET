@@ -293,6 +293,56 @@
             A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
         }
 
+        [Test]
+        public void Done_callback_not_fired_if_sequence_reset_during_input()
+        {
+            // Given
+            cheet.Register("a b c");
+            cheet.Done(callbacks.Done);
+
+            // When
+            cheet.SendSequence("a b");
+            cheet.Reset("a b c");
+            cheet.SendSequence("c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustNotHaveHappened();
+        }
+
+        [Test]
+        public void Resetting_prevents_fail_callbacks()
+        {
+            // Given
+            cheet.Register("a b c");
+            cheet.Fail(callbacks.Fail);
+
+            // When
+            cheet.SendSequence("a b");
+            cheet.Reset("a b c");
+            cheet.SendSequence("x");
+
+            // Then
+            A.CallTo(FailCallbackFor("a b c")).MustNotHaveHappened();
+        }
+
+        [Test]
+        public void Only_requested_sequence_is_reset()
+        {
+            // Given
+            cheet.Register("a b c");
+            cheet.Register("a b d");
+            cheet.Done(callbacks.Done);
+
+            // When
+            cheet.SendSequence("a b");
+            cheet.Reset("a b d");
+            cheet.SendSequence("c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
+            A.CallTo(FailCallbackFor("a b d")).MustNotHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
