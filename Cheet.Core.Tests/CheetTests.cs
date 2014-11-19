@@ -110,6 +110,21 @@
             A.CallTo(DoneCallbackFor("a a a")).MustHaveHappened(Repeated.Exactly.Once);
         }
 
+        [Test]
+        public void Can_register_multiple_done_callbacks_to_sequence()
+        {
+            // Given
+            cheet.Register("a b c", callbacks.Done);
+            cheet.Register("a b c", callbacks.ParamterlessDone);
+
+            // When
+            cheet.SendSequence("a b c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
+            A.CallTo(() => callbacks.ParamterlessDone()).MustHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
