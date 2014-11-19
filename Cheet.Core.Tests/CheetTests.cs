@@ -136,14 +136,32 @@
             cheet.SendSequence("a b c");
 
             // Then
-            A.CallTo(() => callbacks.Next("a b c", new TestKey("a"), 0, A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
-            A.CallTo(() => callbacks.Next("a b c", new TestKey("b"), 1, A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
-            A.CallTo(() => callbacks.Next("a b c", new TestKey("c"), 2, A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
+            A.CallTo(NextCallbackFor("a b c", "a", 0)).MustHaveHappened();
+            A.CallTo(NextCallbackFor("a b c", "b", 1)).MustHaveHappened();
+            A.CallTo(NextCallbackFor("a b c", "c", 2)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Next_callbacks_reset_when_sequence_fails()
+        {
+            // Given
+            cheet.Register("a b c", new TestCheetCallbacks { Next = callbacks.Next });
+
+            // When
+            cheet.SendSequence("a x a");
+
+            // Then
+            A.CallTo(NextCallbackFor("a b c", "a", 0)).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
+        }
+
+        private Expression<Action> NextCallbackFor(string sequence, string keyName, int number)
+        {
+            return () => callbacks.Next(sequence, new TestKey(keyName), number, A<TestKey[]>.That.Matches(Keys.For(sequence)));
         }
     }
 
