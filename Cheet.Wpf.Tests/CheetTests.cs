@@ -4,7 +4,9 @@
     using NUnit.Framework;
     using System;
     using System.Collections;
+    using System.Windows;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     [TestFixture]
     public class CheetTests
@@ -31,6 +33,23 @@
 
             // Then
             mappingBadKeyName.ShouldThrow<ArgumentException>().WithMessage("Could not map key named 'bad_name'.");
+        }
+
+        [Test]
+        [RequiresSTA]
+        public void Key_down_events_trigger_cheet_sequences()
+        {
+            // Given
+            var uiElement = new UIElement();
+            uiElement.PreviewKeyDown += cheet.OnKeyDown;
+            var sequenceDone = false;
+            cheet.Register("a b c", () => { sequenceDone = true; });
+
+            // When
+            uiElement.SimulateKeyPresses(Key.A, Key.B, Key.C);
+
+            // Then
+            sequenceDone.Should().BeTrue();
         }
 
         public IEnumerable KeyNameMappings()
@@ -144,11 +163,38 @@
         }
     }
 
+    internal static class UIElementExtensions
+    {
+        internal static void SimulateKeyPresses(this UIElement uiElement, params Key[] keys)
+        {
+            foreach (var key in keys)
+            {
+                var keyArgs = new KeyEventArgs(Keyboard.PrimaryDevice, new FakePresentationSource(), Environment.TickCount, key) { RoutedEvent = UIElement.PreviewKeyDownEvent };
+                uiElement.RaiseEvent(keyArgs);
+            }
+        }
+    }
+
     internal class TestCheet : Cheet
     {
         public new Key GetKey(string keyName)
         {
             return base.GetKey(keyName);
+        }
+    }
+
+    internal class FakePresentationSource : PresentationSource
+    {
+        public override Visual RootVisual { get; set; }
+
+        public override bool IsDisposed
+        {
+            get { return false; }
+        }
+
+        protected override CompositionTarget GetCompositionTargetCore()
+        {
+            return null;
         }
     }
 }

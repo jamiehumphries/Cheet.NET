@@ -12,6 +12,11 @@
         private static readonly Regex KeypadNumberKeyNamePattern = new Regex(@"^kp_[0-9]$");
         private static readonly Regex FunctionKeyNamePattern = new Regex(@"^(?:f[1-9]|f1[0-2])$");
 
+        public void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            base.OnKeyDown(e.Key);
+        }
+
         protected override Key GetKey(string keyName)
         {
             if (LetterKeyNamePattern.IsMatch(keyName))
