@@ -519,7 +519,7 @@
         public override bool Equals(object obj)
         {
             var otherKey = obj as TestKey;
-            return otherKey != null && keyName.Equals(otherKey.keyName);
+            return otherKey != null && Equals(otherKey);
         }
 
         protected bool Equals(TestKey other)
