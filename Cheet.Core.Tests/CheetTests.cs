@@ -260,6 +260,23 @@
         }
 
         [Test]
+        public void Can_register_for_all_callbacks_on_a_sequence()
+        {
+            // Given
+            cheet.Register("a b c", new TestCheetCallbacks { Done = callbacks.Done, Next = callbacks.Next, Fail = callbacks.Fail });
+
+            // When
+            cheet.SendSequence("a b c a b x");
+
+            // Then
+            A.CallTo(NextCallbackFor("a b c", "a", 0)).MustHaveHappened();
+            A.CallTo(NextCallbackFor("a b c", "b", 1)).MustHaveHappened();
+            A.CallTo(NextCallbackFor("a b c", "c", 2)).MustHaveHappened();
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
+            A.CallTo(FailCallbackFor("a b c")).MustHaveHappened();
+        }
+
+        [Test]
         public void Disabled_sequences_do_not_fire_further_callbacks()
         {
             // Given
