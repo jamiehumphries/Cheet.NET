@@ -21,6 +21,10 @@
             {
                 MoveNext();
             }
+            else
+            {
+                Reset();
+            }
         }
 
         private void Reset()

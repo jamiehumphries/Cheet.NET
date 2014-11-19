@@ -56,6 +56,7 @@
 
         [TestCase("a b")]
         [TestCase("a b d")]
+        [TestCase("a a b b c c")]
         public void Paramterless_callback_not_invoked_if_sequence_incomplete_or_missed(string failedSequence)
         {
             // Given
