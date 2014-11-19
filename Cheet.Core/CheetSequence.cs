@@ -23,7 +23,7 @@
         {
             if (sequence[completedIndex + 1].Equals(key))
             {
-                MoveNext();
+                OnNext();
             }
             else if (completedIndex != -1)
             {
@@ -36,10 +36,13 @@
             completedIndex = -1;
         }
 
-        private void MoveNext()
+        private void OnNext()
         {
             completedIndex++;
-            OnNext();
+            if (Next != null)
+            {
+                Next(this, new NextEventArgs { Key = sequence[completedIndex], Number = completedIndex });
+            }
             if (completedIndex == sequence.Length - 1)
             {
                 OnDone();
@@ -52,14 +55,6 @@
             if (Done != null)
             {
                 Done(this, new EventArgs());
-            }
-        }
-
-        private void OnNext()
-        {
-            if (Next != null)
-            {
-                Next(this, new NextEventArgs { Key = sequence[completedIndex], Number = completedIndex });
             }
         }
 
