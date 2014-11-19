@@ -471,6 +471,21 @@
             registeringNullKey.ShouldThrow<ArgumentException>().WithMessage("Could not map key named 'nullkey'.");
         }
 
+        [Test]
+        public void Received_null_keys_cause_sequence_reset()
+        {
+            // Given
+            cheet.Register("a b c", callbacks.Done);
+
+            // When
+            cheet.SendSequence("a b");
+            cheet.SendKey(null);
+            cheet.SendSequence("c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustNotHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
@@ -517,12 +532,17 @@
 
     internal class Cheet : Cheet<TestKey>
     {
+        internal void SendKey(string keyName)
+        {
+            OnKeyDown(GetKey(keyName));
+        }
+
         internal void SendSequence(string sequence)
         {
             var keyNames = sequence.Split(' ');
             foreach (var keyName in keyNames)
             {
-                OnKeyDown(GetKey(keyName));
+                SendKey(keyName);
             }
         }
 
