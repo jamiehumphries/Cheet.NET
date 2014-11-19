@@ -8,7 +8,7 @@
 
     public interface ITestCallbacks<T>
     {
-        void Done();
+        void ParamterlessDone();
         void Done(string str, T[] seq);
     }
 
@@ -42,13 +42,13 @@
         public void Sequences_can_be_registered_with_parameterless_done_callback()
         {
             // Given
-            cheet.Register("a b c", () => callbacks.Done());
+            cheet.Register("a b c", callbacks.ParamterlessDone);
 
             // When
             cheet.SendSequence("a b c");
 
             // Then
-            A.CallTo(() => callbacks.Done()).MustHaveHappened();
+            A.CallTo(() => callbacks.ParamterlessDone()).MustHaveHappened();
         }
 
         [TestCase("a b c")]
@@ -58,7 +58,7 @@
         public void Done_callback_invoked_when_sequence_done(string sequence)
         {
             // Given
-            cheet.Register("a b c", (str, seq) => callbacks.Done(str, seq));
+            cheet.Register("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence(sequence);
@@ -73,7 +73,7 @@
         public void Done_callback_not_invoked_if_sequence_incomplete_or_missed(string sequence)
         {
             // Given
-            cheet.Register("a b c", (str, seq) => callbacks.Done(str, seq));
+            cheet.Register("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence(sequence);
@@ -88,7 +88,7 @@
         public void Can_complete_sequences_multiple_times(string sequence, int numberOfCompletions)
         {
             // Given
-            cheet.Register("a b c", (str, seq) => callbacks.Done(str, seq));
+            cheet.Register("a b c", callbacks.Done);
 
             // When
             cheet.SendSequence(sequence);
@@ -101,7 +101,7 @@
         public void Completions_do_not_overlap()
         {
             // Given
-            cheet.Register("a a a", (str, seq) => callbacks.Done(str, seq));
+            cheet.Register("a a a", callbacks.Done);
 
             // When
             cheet.SendSequence("a a a a a");
