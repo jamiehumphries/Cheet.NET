@@ -19,7 +19,7 @@
 
     public abstract class Cheet<T> : ICheet<T>
     {
-        private readonly List<CheetSequence<T>> cheetSequences = new List<CheetSequence<T>>();
+        private readonly Dictionary<string, CheetSequence<T>> cheetSequences = new Dictionary<string, CheetSequence<T>>();
 
         private delegate void SequenceEventHandler(object sender, SequenceEventArgs e);
 
@@ -48,7 +48,7 @@
 
         public virtual void Register(string sequence, CheetCallbacks<T> callbacks)
         {
-            AddSequence(sequence);
+            TrackSequence(sequence);
 
             if (callbacks.Done != null)
             {
@@ -101,7 +101,7 @@
 
         public virtual void Disable(string sequence)
         {
-            throw new NotImplementedException();
+            cheetSequences.Remove(sequence);
         }
 
         public virtual void Reset(string sequence)
@@ -111,7 +111,7 @@
 
         protected virtual void OnKeyDown(T key)
         {
-            foreach (var cheetSequence in cheetSequences)
+            foreach (var cheetSequence in cheetSequences.Values)
             {
                 cheetSequence.OnKeyDown(key);
             }
@@ -119,11 +119,16 @@
 
         protected abstract T GetKey(string keyName);
 
-        private void AddSequence(string sequence)
+        private void TrackSequence(string sequence)
         {
+            if (cheetSequences.ContainsKey(sequence))
+            {
+                return;
+            }
+
             var keySequence = ParseSequence(sequence);
             var cheetSequence = new CheetSequence<T>(keySequence);
-            cheetSequences.Add(cheetSequence);
+            cheetSequences.Add(sequence, cheetSequence);
 
             cheetSequence.Done += (sender, e) => OnSequenceDone(
                 new SequenceEventArgs { StringSequence = sequence, KeySequence = keySequence });

@@ -195,6 +195,25 @@
             A.CallTo(FailCallbackFor("a b c")).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
+        [Test]
+        public void Disabled_sequences_do_not_fire_further_callbacks()
+        {
+            // Given
+            cheet.Register("a b c", new TestCheetCallbacks { Done = callbacks.Done, Next = callbacks.Next, Fail = callbacks.Fail });
+
+            // When
+            cheet.SendSequence("a");
+            cheet.Disable("a b c");
+            cheet.SendSequence("b c a b x");
+
+            // Then
+            A.CallTo(NextCallbackFor("a b c", "a", 0)).MustHaveHappened();
+            A.CallTo(NextCallbackFor("a b c", "b", 1)).MustNotHaveHappened();
+            A.CallTo(NextCallbackFor("a b c", "c", 2)).MustNotHaveHappened();
+            A.CallTo(DoneCallbackFor("a b c")).MustNotHaveHappened();
+            A.CallTo(FailCallbackFor("a b c")).MustNotHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
