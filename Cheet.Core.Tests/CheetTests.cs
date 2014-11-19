@@ -97,6 +97,19 @@
             A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened(Repeated.Exactly.Times(numberOfCompletions));
         }
 
+        [Test]
+        public void Completions_do_not_overlap()
+        {
+            // Given
+            cheet.Register("a a a", (str, seq) => callbacks.Done(str, seq));
+
+            // When
+            cheet.SendSequence("a a a a a");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a a a")).MustHaveHappened(Repeated.Exactly.Once);
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
