@@ -21,9 +21,13 @@
     {
         private readonly List<CheetSequence<T>> cheetSequences = new List<CheetSequence<T>>();
 
-        private delegate void SequenceDoneEventHandler(object sender, SequenceDoneEventArgs e);
+        private delegate void SequenceEventHandler(object sender, SequenceEventArgs e);
 
-        private event SequenceDoneEventHandler SequenceDone;
+        private delegate void SequenceNextEventHandler(object sender, SequenceNextEventArgs e);
+
+        private event SequenceEventHandler SequenceDone;
+
+        private event SequenceNextEventHandler SequenceNext;
 
         public virtual void Register(string sequence)
         {
@@ -85,7 +89,7 @@
 
         public virtual void Next(Action<string, T, int, T[]> callback)
         {
-            throw new NotImplementedException();
+            SequenceNext += (sender, e) => callback(e.StringSequence, e.Key, e.Number, e.KeySequence);
         }
 
         public virtual void Fail(Action<string, T[]> callback)
@@ -119,8 +123,10 @@
             var cheetSequence = new CheetSequence<T>(keySequence);
             cheetSequences.Add(cheetSequence);
 
-            var doneEventArgs = new SequenceDoneEventArgs { StringSequence = sequence, KeySequence = keySequence };
-            cheetSequence.Done += (sender, e) => OnSequenceDone(doneEventArgs);
+            cheetSequence.Done += (sender, e) => OnSequenceDone(
+                new SequenceEventArgs { StringSequence = sequence, KeySequence = keySequence });
+            cheetSequence.Next += (sender, e) => OnSequenceNext(
+                new SequenceNextEventArgs { StringSequence = sequence, Key = e.Key, Number = e.Number, KeySequence = keySequence });
         }
 
         private T[] ParseSequence(string sequence)
@@ -129,7 +135,7 @@
             return keyNames.Select(GetKey).ToArray();
         }
 
-        private void OnSequenceDone(SequenceDoneEventArgs e)
+        private void OnSequenceDone(SequenceEventArgs e)
         {
             if (SequenceDone != null)
             {
@@ -137,10 +143,24 @@
             }
         }
 
-        private class SequenceDoneEventArgs
+        private void OnSequenceNext(SequenceNextEventArgs e)
+        {
+            if (SequenceNext != null)
+            {
+                SequenceNext(this, e);
+            }
+        }
+
+        private class SequenceEventArgs
         {
             public string StringSequence { get; set; }
             public T[] KeySequence { get; set; }
+        }
+
+        private class SequenceNextEventArgs : SequenceEventArgs
+        {
+            public T Key { get; set; }
+            public int Number { get; set; }
         }
     }
 }

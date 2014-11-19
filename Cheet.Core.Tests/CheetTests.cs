@@ -10,6 +10,7 @@
     {
         void ParamterlessDone();
         void Done(string str, T[] seq);
+        void Next(string arg1, TestKey arg2, int arg3, TestKey[] arg4);
     }
 
     [TestFixture]
@@ -125,6 +126,21 @@
             A.CallTo(() => callbacks.ParamterlessDone()).MustHaveHappened();
         }
 
+        [Test]
+        public void Next_callback_invoked_for_each_match_along_sequence()
+        {
+            // Given
+            cheet.Register("a b c", new TestCheetCallbacks { Next = callbacks.Next });
+
+            // When
+            cheet.SendSequence("a b c");
+
+            // Then
+            A.CallTo(() => callbacks.Next("a b c", new TestKey("a"), 0, A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
+            A.CallTo(() => callbacks.Next("a b c", new TestKey("b"), 1, A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
+            A.CallTo(() => callbacks.Next("a b c", new TestKey("c"), 2, A<TestKey[]>.That.Matches(Keys.For("a b c")))).MustHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
@@ -156,6 +172,8 @@
             return actualKeys => expectedKeys.SequenceEqual(actualKeys);
         }
     }
+
+    internal class TestCheetCallbacks : CheetCallbacks<TestKey> {}
 
     internal class Cheet : Cheet<TestKey>
     {
