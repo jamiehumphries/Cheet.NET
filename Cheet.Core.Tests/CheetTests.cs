@@ -361,6 +361,20 @@
             A.CallTo(FailCallbackFor("a b d")).MustNotHaveHappened();
         }
 
+        [Test]
+        public void Disabling_sequence_in_callback_does_not_interrupt_other_sequences()
+        {
+            // Given
+            cheet.Map("a b c", () => cheet.Disable("a b c"));
+            cheet.Map("b c d", callbacks.Done);
+
+            // When
+            cheet.SendSequence("a b c d");
+
+            // Then
+            A.CallTo(DoneCallbackFor("b c d")).MustHaveHappened();
+        }
+
         [TestCase("")]
         [TestCase("   ")]
         [TestCase(null)]

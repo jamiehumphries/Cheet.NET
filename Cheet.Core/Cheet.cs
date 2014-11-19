@@ -120,7 +120,7 @@
 
         protected virtual void OnKeyDown(T key)
         {
-            foreach (var cheetSequence in cheetSequences.Values)
+            foreach (var cheetSequence in cheetSequences.Values.ToList())
             {
                 cheetSequence.OnKeyDown(key);
             }
