@@ -196,6 +196,70 @@
         }
 
         [Test]
+        public void Can_subscribe_to_all_done_callbacks()
+        {
+            // Given
+            cheet.Register("a b c");
+            cheet.Register("x y z");
+
+            // When
+            cheet.Done(callbacks.Done);
+            cheet.SendSequence("a b c x y z");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
+            A.CallTo(DoneCallbackFor("x y z")).MustHaveHappened();
+        }
+
+        [Test]
+        public void Can_subscribe_to_all_next_callbacks()
+        {
+            // Given
+            cheet.Register("a b c");
+            cheet.Register("x y z");
+
+            // When
+            cheet.Next(callbacks.Next);
+            cheet.SendSequence("a x");
+
+            // Then
+            A.CallTo(NextCallbackFor("a b c", "a", 0)).MustHaveHappened();
+            A.CallTo(NextCallbackFor("x y z", "x", 0)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Can_subscribe_to_all_fail_callbacks()
+        {
+            // Given
+            cheet.Register("a b c");
+            cheet.Register("x y z");
+
+            // When
+            cheet.Fail(callbacks.Fail);
+            cheet.SendSequence("a b 1 x y 2");
+
+            // Then
+            A.CallTo(FailCallbackFor("a b c")).MustHaveHappened();
+            A.CallTo(FailCallbackFor("x y z")).MustHaveHappened();
+        }
+
+        [Test]
+        public void Separate_sequences_can_overlap()
+        {
+            // Given
+            cheet.Register("a b c");
+            cheet.Register("b c d");
+
+            // When
+            cheet.Done(callbacks.Done);
+            cheet.SendSequence("a b c d");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
+            A.CallTo(DoneCallbackFor("b c d")).MustHaveHappened();
+        }
+
+        [Test]
         public void Disabled_sequences_do_not_fire_further_callbacks()
         {
             // Given
