@@ -17,6 +17,7 @@
 
         internal event EventHandler Done;
         internal event NextEventHandler Next;
+        internal event EventHandler Fail;
 
         internal void OnKeyDown(T key)
         {
@@ -26,7 +27,7 @@
             }
             else
             {
-                Reset();
+                OnFail();
             }
         }
 
@@ -45,6 +46,15 @@
             }
         }
 
+        private void OnDone()
+        {
+            Reset();
+            if (Done != null)
+            {
+                Done(this, new EventArgs());
+            }
+        }
+
         private void OnNext()
         {
             if (Next != null)
@@ -53,12 +63,12 @@
             }
         }
 
-        private void OnDone()
+        private void OnFail()
         {
             Reset();
-            if (Done != null)
+            if (Fail != null)
             {
-                Done(this, new EventArgs());
+                Fail(this, new EventArgs());
             }
         }
 

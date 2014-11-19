@@ -29,6 +29,8 @@
 
         private event SequenceNextEventHandler SequenceNext;
 
+        private event SequenceEventHandler SequenceFail;
+
         public virtual void Register(string sequence)
         {
             Register(sequence, new CheetCallbacks<T>());
@@ -94,7 +96,7 @@
 
         public virtual void Fail(Action<string, T[]> callback)
         {
-            throw new NotImplementedException();
+            SequenceFail += (sender, e) => callback(e.StringSequence, e.KeySequence);
         }
 
         public virtual void Disable(string sequence)
@@ -127,6 +129,8 @@
                 new SequenceEventArgs { StringSequence = sequence, KeySequence = keySequence });
             cheetSequence.Next += (sender, e) => OnSequenceNext(
                 new SequenceNextEventArgs { StringSequence = sequence, Key = e.Key, Number = e.Number, KeySequence = keySequence });
+            cheetSequence.Fail += (sender, e) => OnSequenceFail(
+                new SequenceEventArgs { StringSequence = sequence, KeySequence = keySequence });
         }
 
         private T[] ParseSequence(string sequence)
@@ -148,6 +152,14 @@
             if (SequenceNext != null)
             {
                 SequenceNext(this, e);
+            }
+        }
+
+        private void OnSequenceFail(SequenceEventArgs e)
+        {
+            if (SequenceFail != null)
+            {
+                SequenceFail(this, e);
             }
         }
 

@@ -11,6 +11,7 @@
         void ParamterlessDone();
         void Done(string str, T[] seq);
         void Next(string arg1, TestKey arg2, int arg3, TestKey[] arg4);
+        void Fail(string arg1, TestKey[] arg2);
     }
 
     [TestFixture]
@@ -154,6 +155,20 @@
             A.CallTo(NextCallbackFor("a b c", "a", 0)).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
+        [TestCase("a x")]
+        [TestCase("a b x")]
+        public void Fail_callback_called_when_in_progress_sequence_fails(string sequence)
+        {
+            // Given
+            cheet.Register("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
+
+            // When
+            cheet.SendSequence(sequence);
+
+            // Then
+            A.CallTo(FailCallbackFor("a b c")).MustHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
@@ -162,6 +177,11 @@
         private Expression<Action> NextCallbackFor(string sequence, string keyName, int number)
         {
             return () => callbacks.Next(sequence, new TestKey(keyName), number, A<TestKey[]>.That.Matches(Keys.For(sequence)));
+        }
+
+        private Expression<Action> FailCallbackFor(string sequence)
+        {
+            return () => callbacks.Fail(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
         }
     }
 
