@@ -363,23 +363,13 @@
         [TestCase("")]
         [TestCase("   ")]
         [TestCase(null)]
-        public void Null_or_empty_sequences_are_ignored(string sequence)
+        public void Null_or_empty_sequences_are_ignored_when_registering(string sequence)
         {
             // Given
             cheet.Register(sequence);
 
             // When
             cheet.SendSequence("a");
-
-            // Then
-            // Nothing bad happens.
-        }
-
-        [Test]
-        public void Resetting_null_is_not_problematic()
-        {
-            // When
-            cheet.Reset(null);
 
             // Then
             // Nothing bad happens.
@@ -396,10 +386,10 @@
         }
 
         [Test]
-        public void Resetting_unregistered_sequence_is_not_problematic()
+        public void Resetting_null_is_not_problematic()
         {
             // When
-            cheet.Reset("a b c");
+            cheet.Reset(null);
 
             // Then
             // Nothing bad happens.
@@ -410,6 +400,16 @@
         {
             // When
             cheet.Disable("a b c");
+
+            // Then
+            // Nothing bad happens.
+        }
+
+        [Test]
+        public void Resetting_unregistered_sequence_is_not_problematic()
+        {
+            // When
+            cheet.Reset("a b c");
 
             // Then
             // Nothing bad happens.
