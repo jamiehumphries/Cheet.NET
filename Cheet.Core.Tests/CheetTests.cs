@@ -360,6 +360,61 @@
             A.CallTo(FailCallbackFor("a b d")).MustNotHaveHappened();
         }
 
+        [TestCase("")]
+        [TestCase("   ")]
+        [TestCase(null)]
+        public void Null_or_empty_sequences_are_ignored(string sequence)
+        {
+            // Given
+            cheet.Register(sequence);
+
+            // When
+            cheet.SendSequence("a");
+
+            // Then
+            // Nothing bad happens.
+        }
+
+        [Test]
+        public void Resetting_null_is_not_problematic()
+        {
+            // When
+            cheet.Reset(null);
+
+            // Then
+            // Nothing bad happens.
+        }
+
+        [Test]
+        public void Disabling_null_sequence_is_not_problematic()
+        {
+            // When
+            cheet.Disable(null);
+
+            // Then
+            // Nothing bad happens.
+        }
+
+        [Test]
+        public void Resetting_unregistered_sequence_is_not_problematic()
+        {
+            // When
+            cheet.Reset("a b c");
+
+            // Then
+            // Nothing bad happens.
+        }
+
+        [Test]
+        public void Disabling_unregistered_sequence_is_not_problematic()
+        {
+            // When
+            cheet.Disable("a b c");
+
+            // Then
+            // Nothing bad happens.
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));

@@ -48,6 +48,7 @@
 
         public virtual void Register(string sequence, CheetCallbacks<T> callbacks)
         {
+            sequence = NormalizeSequence(sequence);
             TrackSequence(sequence);
 
             if (callbacks.Done != null)
@@ -101,11 +102,13 @@
 
         public virtual void Disable(string sequence)
         {
+            sequence = NormalizeSequence(sequence);
             cheetSequences.Remove(sequence);
         }
 
         public virtual void Reset(string sequence)
         {
+            sequence = NormalizeSequence(sequence);
             CheetSequence<T> cheetSequence;
             cheetSequences.TryGetValue(sequence, out cheetSequence);
             if (cheetSequence != null)
@@ -124,9 +127,14 @@
 
         protected abstract T GetKey(string keyName);
 
+        private string NormalizeSequence(string sequence)
+        {
+            return sequence ?? "";
+        }
+
         private void TrackSequence(string sequence)
         {
-            if (cheetSequences.ContainsKey(sequence))
+            if (String.IsNullOrEmpty(sequence) || cheetSequences.ContainsKey(sequence))
             {
                 return;
             }
