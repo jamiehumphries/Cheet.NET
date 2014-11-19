@@ -214,6 +214,21 @@
             A.CallTo(FailCallbackFor("a b c")).MustNotHaveHappened();
         }
 
+        [Test]
+        public void Disabled_sequences_can_be_reenabled()
+        {
+            // Given
+            cheet.Register("a b c", callbacks.Done);
+            cheet.Disable("a b c");
+
+            // When
+            cheet.Register("a b c", callbacks.Done);
+            cheet.SendSequence("a b c");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
