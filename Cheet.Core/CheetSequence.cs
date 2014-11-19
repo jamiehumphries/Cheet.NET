@@ -23,6 +23,11 @@
             }
         }
 
+        private void Reset()
+        {
+            completedIndex = -1;
+        }
+
         private void MoveNext()
         {
             completedIndex++;
@@ -34,6 +39,7 @@
 
         private void OnDone()
         {
+            Reset();
             if (Done != null)
             {
                 Done(this, new EventArgs());

@@ -38,14 +38,17 @@
             // Nothing bad happens.
         }
 
-        [Test]
-        public void Parameterless_callback_invoked_when_sequence_done()
+        [TestCase("a b c")]
+        [TestCase("x y a b c")]
+        [TestCase("a b c 1 2")]
+        [TestCase("x y a b c 1 2")]
+        public void Parameterless_callback_invoked_when_sequence_done(string successfulSequence)
         {
             // Given
             cheet.Register("a b c", () => callbacks.Done());
 
             // When
-            cheet.SendSequence("a b c");
+            cheet.SendSequence(successfulSequence);
 
             // Then
             A.CallTo(() => callbacks.Done()).MustHaveHappened();
