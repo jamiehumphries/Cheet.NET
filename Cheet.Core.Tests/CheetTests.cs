@@ -1,6 +1,7 @@
 ﻿namespace Cheet.Core.Tests
 {
     using FakeItEasy;
+    using FluentAssertions;
     using NUnit.Framework;
     using System;
     using System.Linq;
@@ -460,6 +461,16 @@
             A.CallTo(DoneCallbackFor("a b c")).MustNotHaveHappened();
         }
 
+        [Test]
+        public void Sequence_key_names_mapped_to_null_key_cause_exception()
+        {
+            // When
+            Action registeringNullKey = () => cheet.Register("nullkey");
+
+            // Then
+            registeringNullKey.ShouldThrow<ArgumentException>().WithMessage("Could not map key named 'nullkey'.");
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
@@ -517,7 +528,7 @@
 
         protected override TestKey GetKey(string keyName)
         {
-            return new TestKey(keyName);
+            return keyName == "nullkey" ? null : new TestKey(keyName);
         }
     }
 }

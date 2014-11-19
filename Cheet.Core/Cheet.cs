@@ -155,7 +155,18 @@
         private T[] ParseSequence(string sequence)
         {
             var keyNames = sequence.Split(' ');
-            return keyNames.Select(GetKey).ToArray();
+            return keyNames.Select(TryGetKey).ToArray();
+        }
+
+        private T TryGetKey(string keyName)
+        {
+            var key = GetKey(keyName);
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
+            if (key == (null))
+            {
+                throw new ArgumentException(String.Format("Could not map key named '{0}'.", keyName));
+            }
+            return key;
         }
 
         private void OnSequenceDone(SequenceEventArgs e)
