@@ -25,7 +25,7 @@
             {
                 MoveNext();
             }
-            else
+            else if (completedIndex != -1)
             {
                 OnFail();
             }

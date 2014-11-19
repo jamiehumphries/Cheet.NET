@@ -169,6 +169,19 @@
             A.CallTo(FailCallbackFor("a b c")).MustHaveHappened();
         }
 
+        [Test]
+        public void Fail_callback_not_invoked_if_sequence_not_in_progress()
+        {
+            // Given
+            cheet.Register("a b c", new TestCheetCallbacks { Fail = callbacks.Fail });
+
+            // When
+            cheet.SendSequence("x");
+
+            // Then
+            A.CallTo(FailCallbackFor("a b c")).WithAnyArguments().MustNotHaveHappened();
+        }
+
         private Expression<Action> DoneCallbackFor(string sequence)
         {
             return () => callbacks.Done(sequence, A<TestKey[]>.That.Matches(Keys.For(sequence)));
