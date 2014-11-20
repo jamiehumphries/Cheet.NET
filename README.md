@@ -70,7 +70,11 @@ The `Cheet.Wpf.Demo` project in this repository demos all of the above sequences
 ### Install
 
 #### NuGet
-WPF version:
+[Core project](https://www.nuget.org/packages/Cheet.Core/):
+
+    Install-Package Cheet.Core
+
+[WPF version](https://www.nuget.org/packages/Cheet.Wpf/):
 
     Install-Package Cheet.Wpf
 
@@ -161,19 +165,19 @@ Disable a previously-mapped sequence.
 
 > <a name='api_disable_sequence'></a>
 > [`sequence`](#api_disable_sequence) (String)
-> > The same string you used to map the callback when using [`cheet(seq, ...)`](#api_cheet).
+> > The same string you used to map the callback when using [`cheet.Map(seq, ...)`](#api_cheet).
 
 <a name='api_reset'></a>
 #### [`cheet.Reset(sequence)`](#api_reset)
 
 Resets a sequence that may or may not be in progress.
 
-This will *not* cause `fail` callbacks to fire, but will effectively
+This will *not* cause `Fail` callbacks to fire, but will effectively
 cancel the sequence.
 
 > <a name='api_reset_sequence'></a>
 > [`sequence`](#api_reset_sequence) (String)
-> > The same string you used to map the callback when using [`cheet(seq, ...)`](#api_cheet).
+> > The same string you used to map the callback when using [`cheet.Map(seq, ...)`](#api_cheet).
 
 ### Available Key Names
 
