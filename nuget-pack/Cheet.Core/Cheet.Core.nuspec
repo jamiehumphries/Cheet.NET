@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Cheet.Wpf</id>
+    <id>Cheet.Core</id>
     <version>$version$</version>
-    <title>Cheet.NET for WPF</title>
+    <title>Cheet.NET</title>
     <authors>Jamie Humphries</authors>
     <owners>Jamie Humphries</owners>
     <projectUrl>https://github.com/jamiehumphries/Cheet.NET</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/jamiehumphries/Cheet.NET/master/LICENSE.md</licenseUrl>
     <iconUrl>https://raw.githubusercontent.com/jamiehumphries/Cheet.NET/master/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>easy easter eggs (konami code, etc) for your WPF projects.</description>
-    <tags>cheet easter eggs konami code wpf keyboard shortcut</tags>
+    <description>Easy easter eggs (konami code, etc) for your .NET projects.</description>
+    <tags>cheet easter eggs konami code keyboard shortcut</tags>
     <copyright>Copyright 2014</copyright>
   </metadata>
 </package>
