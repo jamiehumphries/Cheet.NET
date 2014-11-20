@@ -2,20 +2,21 @@
 
 ## easy easter eggs in .NET
 
+This is a .NET port of the excellent [cheet.js](https://github.com/namuol/cheet.js) by [Louis Acresti (namuol)](https://github.com/namuol). I would recommend checking out that project if you need easter egg functionality in browser!
+
 ```csharp
 // Initialization
 var cheet = new Cheet();
 myUIElement.PreviewKeyDown += cheet.OnKeyDown;
-myWindow.PreviewKeyDown += cheet.OnKeyDown;
 ```
 
 ```csharp
-cheet.Map("↑ ↑ ↓ ↓ ← → ← → b a", () => { Debug.WriteLine("Voilà!")); };
+cheet.Map("↑ ↑ ↓ ↓ ← → ← → b a", () => { Debug.WriteLine("Voilà!"); } );
 ```
 
 ```csharp
 cheet.Map("i d d q d", () => {
-  Debug.WriteLine("god mode enabled")
+  Debug.WriteLine("god mode enabled");
 });
 ```
 
@@ -56,16 +57,21 @@ cheet.Map(sequences.Circle);
 cheet.Done((str, seq) => {
   if (str == sequences.Cross) {
     Debug.WriteLine("cross!");
-  } else {
+  } else if (str == sequences.Circle) {
     Debug.WriteLine("circle!");
   }
 });
 ```
 
+### Demo
+
+The `Cheet.Wpf.Demo` project in this repository demos all of the above sequences.
+
 ### Install
 
 #### NuGet
 WPF version:
+
     Install-Package Cheet.Wpf
 
 ### API
@@ -87,7 +93,7 @@ Map a sequence of keypresses to a callback. This can be called multiple times.
 > > 
 > > Arguments:
 > > * `str` - The string representation of the sequence that completed.
-> > * `seq` - An array of [key names](#available-key-names) representing the sequence that completed.
+> > * `seq` - An array of keys representing the sequence that completed.
 > 
 > <a name='api_cheet_fail'></a>
 > [`fail(str, seq)`](#api_cheet_fail) (callback)
@@ -95,7 +101,7 @@ Map a sequence of keypresses to a callback. This can be called multiple times.
 > > 
 > > Arguments:
 > > * `str` - The string representation of the sequence that failed.
-> > * `seq` - An array of [key names](#available-key-names) representing the sequence that was pressed.
+> > * `seq` - An array of keys representing the sequence that was pressed.
 >
 > <a name='api_cheet_next'></a>
 > [`next(str, key, num, seq)`](#api_cheet_next) (callback)
@@ -105,7 +111,7 @@ Map a sequence of keypresses to a callback. This can be called multiple times.
 > > * `str` - The string representation of the sequence that is in progress.
 > > * `key` - The [name of the key](#available-key-names) that was just pressed.
 > > * `num` - A number representing the current progress of the sequence. (starts at 0)
-> > * `seq` - An array of [key names](#available-key-names) representing the sequence that is in progress.
+> > * `seq` - An array of keys representing the sequence that is in progress.
 
 <a name='api_done'></a>
 #### [`cheet.Done(callback)`](#api_done)
@@ -118,7 +124,7 @@ Set a global callback that executes whenever *any* mapped sequence is completed 
 > > 
 > > Arguments:
 > > * `str` - The string representation of the sequence that completed.
-> > * `seq` - An array of [key names](#available-key-names) representing the sequence that completed.
+> > * `seq` - An array of keys representing the sequence that completed.
 
 <a name='api_next'></a>
 #### [`cheet.Next(callback)`](#api_next)
@@ -133,7 +139,7 @@ Set a global callback that executes whenever *any* mapped sequence progresses.
 > > * `str` - The string representation of the sequence that is in progress.
 > > * `key` - The [name of the key](#available-key-names) that was just pressed.
 > > * `num` - A number representing the current progress of the sequence. (starts at 0)
-> > * `seq` - An array of [key names](#available-key-names) representing the sequence that is in progress.
+> > * `seq` - An array of keys representing the sequence that is in progress.
 
 <a name='api_fail'></a>
 #### [`cheet.Fail(callback)`](#api_fail)
@@ -146,7 +152,7 @@ Set a global callback that executes whenever *any* in-progress sequence is broke
 > > 
 > > Arguments:
 > > * `str` - The string representation of the sequence that failed.
-> > * `seq` - An array of [key names](#available-key-names) representing the sequence that was pressed.
+> > * `seq` - An array of keys representing the sequence that was pressed.
 
 <a name='api_disable'></a>
 #### [`cheet.Disable(sequence)`](#api_disable)
@@ -220,3 +226,7 @@ cancel the sequence.
 ### License
 
 MIT
+
+### Acknowledgements
+
+This whole project was inspired and based on [cheet.js](https://github.com/namuol/cheet.js) by [Louis Acresti (namuol)](https://github.com/namuol). The API and all of this documentation is lifted from that project!
