@@ -38,15 +38,16 @@
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <div class="highlight highlight-csharp"><pre><span class="pl-c">// Initialization</span>
-<span class="pl-k">var</span> cheet = <span class="pl-s">new</span> Cheet();
-myUIElement.PreviewKeyDown += cheet.OnKeyDown;
-myWindow.PreviewKeyDown += cheet.OnKeyDown;</pre></div>
+        <p>This is a .NET port of the excellent <a href="https://github.com/namuol/cheet.js">cheet.js</a> by <a href="https://github.com/namuol">Louis Acresti (namuol)</a>. I would recommend checking out that project if you need easter egg functionality in browser!</p>
 
-<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>↑ ↑ ↓ ↓ ← → ← → b a<span class="pl-pds">"</span></span>, () =&gt; { Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>Voilà!<span class="pl-pds">"</span></span>)); };</pre></div>
+<div class="highlight highlight-csharp"><pre><span class="pl-c">// Initialization</span>
+<span class="pl-k">var</span> cheet = <span class="pl-s">new</span> Cheet();
+myUIElement.PreviewKeyDown += cheet.OnKeyDown;</pre></div>
+
+<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>↑ ↑ ↓ ↓ ← → ← → b a<span class="pl-pds">"</span></span>, () =&gt; { Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>Voilà!<span class="pl-pds">"</span></span>); } );</pre></div>
 
 <div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>i d d q d<span class="pl-pds">"</span></span>, () =&gt; {
-  Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>god mode enabled<span class="pl-pds">"</span></span>)
+  Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>god mode enabled<span class="pl-pds">"</span></span>);
 });</pre></div>
 
 <div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>o n e a t a t i m e<span class="pl-pds">"</span></span>, <span class="pl-s">new</span> CheetCallbacks {
@@ -81,10 +82,331 @@ cheet.Map(sequences.Circle);
 cheet.Done((str, seq) =&gt; {
   <span class="pl-k">if</span> (str == sequences.Cross) {
     Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>cross!<span class="pl-pds">"</span></span>);
-  } <span class="pl-k">else</span> {
+  } <span class="pl-k">else</span> <span class="pl-k">if</span> (str == sequences.Circle) {
     Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>circle!<span class="pl-pds">"</span></span>);
   }
 });</pre></div>
+
+<h3>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demo</h3>
+
+<p>The <code>Cheet.Wpf.Demo</code> project in this repository demos all of the above sequences.</p>
+
+<h3>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h3>
+
+<h4>
+<a id="nuget" class="anchor" href="#nuget" aria-hidden="true"><span class="octicon octicon-link"></span></a>NuGet</h4>
+
+<p>WPF version:</p>
+
+<pre><code>Install-Package Cheet.Wpf
+</code></pre>
+
+<h3>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h3>
+
+<p><a name="api_cheet"></a></p>
+
+<h4>
+<a id="cheetmapsequence-done--callbacks--done-next-fail-" class="anchor" href="#cheetmapsequence-done--callbacks--done-next-fail-" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#api_cheet"><code>cheet.Map(sequence, done | callbacks { done, next, fail })</code></a>
+</h4>
+
+<p>Map a sequence of keypresses to a callback. This can be called multiple times.</p>
+
+<blockquote>
+<p><a name="api_cheet_sequence"></a>
+<a href="#api_cheet_sequence"><code>sequence</code></a> (String)</p>
+
+<blockquote>
+<p>A string representation of a sequence of <a href="#available-key-names">key names</a>.</p>
+
+<p>Each keyname must be separated by a single space.</p>
+</blockquote>
+
+<p><a name="api_cheet_done"></a>
+<a href="#api_cheet_done"><code>done(str, seq)</code></a> (callback)</p>
+
+<blockquote>
+<p>A callback to execute each time the sequence is correctly pressed.</p>
+
+<p>Arguments:</p>
+
+<ul>
+<li>
+<code>str</code> - The string representation of the sequence that completed.</li>
+<li>
+<code>seq</code> - An array of keys representing the sequence that completed.</li>
+</ul>
+</blockquote>
+
+<p><a name="api_cheet_fail"></a>
+<a href="#api_cheet_fail"><code>fail(str, seq)</code></a> (callback)</p>
+
+<blockquote>
+<p>A callback to execute each time a sequence's progress is broken.</p>
+
+<p>Arguments:</p>
+
+<ul>
+<li>
+<code>str</code> - The string representation of the sequence that failed.</li>
+<li>
+<code>seq</code> - An array of keys representing the sequence that was pressed.</li>
+</ul>
+</blockquote>
+
+<p><a name="api_cheet_next"></a>
+<a href="#api_cheet_next"><code>next(str, key, num, seq)</code></a> (callback)</p>
+
+<blockquote>
+<p>A callback to execute each time a correct key in the sequence is pressed <em>in order</em>.</p>
+
+<p>Arguments:</p>
+
+<ul>
+<li>
+<code>str</code> - The string representation of the sequence that is in progress.</li>
+<li>
+<code>key</code> - The <a href="#available-key-names">name of the key</a> that was just pressed.</li>
+<li>
+<code>num</code> - A number representing the current progress of the sequence. (starts at 0)</li>
+<li>
+<code>seq</code> - An array of keys representing the sequence that is in progress.</li>
+</ul>
+</blockquote>
+</blockquote>
+
+<p><a name="api_done"></a></p>
+
+<h4>
+<a id="cheetdonecallback" class="anchor" href="#cheetdonecallback" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#api_done"><code>cheet.Done(callback)</code></a>
+</h4>
+
+<p>Set a global callback that executes whenever <em>any</em> mapped sequence is completed successfully.</p>
+
+<blockquote>
+<p><a name="api_done_callback"></a>
+<a href="#api_done_callback"><code>callback(str, seq)</code></a> (callback)</p>
+
+<blockquote>
+<p>A callback to execute each time <em>any</em> sequence is correctly pressed.</p>
+
+<p>Arguments:</p>
+
+<ul>
+<li>
+<code>str</code> - The string representation of the sequence that completed.</li>
+<li>
+<code>seq</code> - An array of keys representing the sequence that completed.</li>
+</ul>
+</blockquote>
+</blockquote>
+
+<p><a name="api_next"></a></p>
+
+<h4>
+<a id="cheetnextcallback" class="anchor" href="#cheetnextcallback" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#api_next"><code>cheet.Next(callback)</code></a>
+</h4>
+
+<p>Set a global callback that executes whenever <em>any</em> mapped sequence progresses.</p>
+
+<blockquote>
+<p><a name="api_next_callback"></a>
+<a href="#api_next_callback"><code>callback(str, key, num, seq)</code></a> (callback)</p>
+
+<blockquote>
+<p>A callback to execute each time a correct key in any sequence is pressed <em>in order</em>.</p>
+
+<p>Arguments:</p>
+
+<ul>
+<li>
+<code>str</code> - The string representation of the sequence that is in progress.</li>
+<li>
+<code>key</code> - The <a href="#available-key-names">name of the key</a> that was just pressed.</li>
+<li>
+<code>num</code> - A number representing the current progress of the sequence. (starts at 0)</li>
+<li>
+<code>seq</code> - An array of keys representing the sequence that is in progress.</li>
+</ul>
+</blockquote>
+</blockquote>
+
+<p><a name="api_fail"></a></p>
+
+<h4>
+<a id="cheetfailcallback" class="anchor" href="#cheetfailcallback" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#api_fail"><code>cheet.Fail(callback)</code></a>
+</h4>
+
+<p>Set a global callback that executes whenever <em>any</em> in-progress sequence is broken.</p>
+
+<blockquote>
+<p><a name="api_fail_callback"></a>
+<a href="#api_fail_callback"><code>callback(str, seq)</code></a> (callback)</p>
+
+<blockquote>
+<p>A callback to execute each time <em>any</em> sequence's progress is broken.</p>
+
+<p>Arguments:</p>
+
+<ul>
+<li>
+<code>str</code> - The string representation of the sequence that failed.</li>
+<li>
+<code>seq</code> - An array of keys representing the sequence that was pressed.</li>
+</ul>
+</blockquote>
+</blockquote>
+
+<p><a name="api_disable"></a></p>
+
+<h4>
+<a id="cheetdisablesequence" class="anchor" href="#cheetdisablesequence" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#api_disable"><code>cheet.Disable(sequence)</code></a>
+</h4>
+
+<p>Disable a previously-mapped sequence.</p>
+
+<blockquote>
+<p><a name="api_disable_sequence"></a>
+<a href="#api_disable_sequence"><code>sequence</code></a> (String)</p>
+
+<blockquote>
+<p>The same string you used to map the callback when using <a href="#api_cheet"><code>cheet(seq, ...)</code></a>.</p>
+</blockquote>
+</blockquote>
+
+<p><a name="api_reset"></a></p>
+
+<h4>
+<a id="cheetresetsequence" class="anchor" href="#cheetresetsequence" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#api_reset"><code>cheet.Reset(sequence)</code></a>
+</h4>
+
+<p>Resets a sequence that may or may not be in progress.</p>
+
+<p>This will <em>not</em> cause <code>fail</code> callbacks to fire, but will effectively
+cancel the sequence.</p>
+
+<blockquote>
+<p><a name="api_reset_sequence"></a>
+<a href="#api_reset_sequence"><code>sequence</code></a> (String)</p>
+
+<blockquote>
+<p>The same string you used to map the callback when using <a href="#api_cheet"><code>cheet(seq, ...)</code></a>.</p>
+</blockquote>
+</blockquote>
+
+<h3>
+<a id="available-key-names" class="anchor" href="#available-key-names" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available Key Names</h3>
+
+<p><strong>NOTE</strong>: Key names are case-sensitive</p>
+
+<h4>
+<a id="directionals" class="anchor" href="#directionals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directionals</h4>
+
+<ul>
+<li>
+<code>left</code> | <code>L</code> | <code>←</code>
+</li>
+<li>
+<code>up</code> | <code>U</code> | <code>↑</code>
+</li>
+<li>
+<code>right</code> | <code>R</code> | <code>→</code>
+</li>
+<li>
+<code>down</code> | <code>D</code> | <code>↓</code>
+</li>
+</ul>
+
+<h4>
+<a id="alphanumeric" class="anchor" href="#alphanumeric" aria-hidden="true"><span class="octicon octicon-link"></span></a>Alphanumeric</h4>
+
+<ul>
+<li>
+<code>0</code>-<code>9</code> (main number keys)</li>
+<li>
+<code>a</code>-<code>z</code>
+</li>
+</ul>
+
+<h4>
+<a id="misc" class="anchor" href="#misc" aria-hidden="true"><span class="octicon octicon-link"></span></a>Misc</h4>
+
+<ul>
+<li><code>backspace</code></li>
+<li><code>tab</code></li>
+<li>
+<code>enter</code> | <code>return</code>
+</li>
+<li>
+<code>shift</code> | <code>⇧</code>
+</li>
+<li>
+<code>control</code> | <code>ctrl</code> | <code>⌃</code>
+</li>
+<li>
+<code>alt</code> | <code>option</code> | <code>⌥</code>
+</li>
+<li>
+<code>command</code> | <code>⌘</code>
+</li>
+<li><code>pause</code></li>
+<li><code>capslock</code></li>
+<li><code>esc</code></li>
+<li><code>space</code></li>
+<li><code>pageup</code></li>
+<li><code>pagedown</code></li>
+<li><code>end</code></li>
+<li><code>home</code></li>
+<li><code>insert</code></li>
+<li><code>delete</code></li>
+<li>
+<code>equal</code> | <code>=</code>
+</li>
+<li>
+<code>comma</code> | <code>,</code>
+</li>
+<li>
+<code>minus</code> | <code>-</code>
+</li>
+<li>
+<code>period</code> | <code>.</code>
+</li>
+</ul>
+
+<h4>
+<a id="keypad" class="anchor" href="#keypad" aria-hidden="true"><span class="octicon octicon-link"></span></a>Keypad</h4>
+
+<ul>
+<li>
+<code>kp_0</code>-<code>kp_9</code>
+</li>
+<li><code>kp_multiply</code></li>
+<li><code>kp_plus</code></li>
+<li><code>kp_minus</code></li>
+<li><code>kp_decimal</code></li>
+<li><code>kp_divide</code></li>
+</ul>
+
+<h4>
+<a id="function-keys" class="anchor" href="#function-keys" aria-hidden="true"><span class="octicon octicon-link"></span></a>Function keys</h4>
+
+<ul>
+<li>
+<code>f1</code>-<code>f12</code>
+</li>
+</ul>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h3>
+
+<p>MIT</p>
+
+<h3>
+<a id="acknowledgements" class="anchor" href="#acknowledgements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgements</h3>
+
+<p>This whole project was inspired and based on <a href="https://github.com/namuol/cheet.js">cheet.js</a> by <a href="https://github.com/namuol">Louis Acresti (namuol)</a>. The API and all of this documentation is lifted from that project!</p>
       </section>
 
     </div>
