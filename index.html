@@ -7,6 +7,10 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/monokai_sublime.css">
+    <style>
+        .highlight-csharp pre { padding: 20px; }
+    </style>
     <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
@@ -18,7 +22,7 @@
     <div class="wrapper">
       <header>
         <h1>Cheet.NET</h1>
-        <p>easy easter eggs (konami code, etc) for your .NET projects.</p>
+        <p>easy easter eggs (konami code, etc) for .NET</p>
         <p class="view"><a href="https://github.com/jamiehumphries/Cheet.NET">View the Project on GitHub <small>jamiehumphries/Cheet.NET</small></a></p>
         <ul>
           <li><a href="https://github.com/jamiehumphries/Cheet.NET/zipball/master">Download <strong>ZIP File</strong></a></li>
@@ -28,51 +32,50 @@
       </header>
       <section>
         <p>This is a .NET port of the excellent <a href="https://github.com/namuol/cheet.js">cheet.js</a> by <a href="https://github.com/namuol">Louis Acresti (namuol)</a>. I would recommend checking out that project if you need easter egg functionality in browser!</p>
-
-<div class="highlight highlight-csharp"><pre><span class="pl-c">// Initialization</span>
-<span class="pl-k">var</span> cheet = <span class="pl-s">new</span> Cheet();
+<div class="highlight highlight-csharp"><pre><span class="comment">// Initialization</span>
+<span class="keyword">var</span> cheet = <span class="keyword">new</span> Cheet();
 myUIElement.PreviewKeyDown += cheet.OnKeyDown;</pre></div>
 
-<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>↑ ↑ ↓ ↓ ← → ← → b a<span class="pl-pds">"</span></span>, () =&gt; { Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>Voilà!<span class="pl-pds">"</span></span>); } );</pre></div>
+<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="string"><span class="pl-pds">"</span>↑ ↑ ↓ ↓ ← → ← → b a<span class="pl-pds">"</span></span>, () =&gt; { Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>Voilà!<span class="pl-pds">"</span></span>); } );</pre></div>
 
-<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>i d d q d<span class="pl-pds">"</span></span>, () =&gt; {
-  Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>god mode enabled<span class="pl-pds">"</span></span>);
+<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="string"><span class="pl-pds">"</span>i d d q d<span class="pl-pds">"</span></span>, () =&gt; {
+  Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>god mode enabled<span class="pl-pds">"</span></span>);
 });</pre></div>
 
-<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>o n e a t a t i m e<span class="pl-pds">"</span></span>, <span class="pl-s">new</span> CheetCallbacks {
+<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="string"><span class="pl-pds">"</span>o n e a t a t i m e<span class="pl-pds">"</span></span>, <span class="keyword">new</span> CheetCallbacks {
   Next = (str, key, num, seq) =&gt; {
-    Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>key pressed: <span class="pl-pds">"</span></span> + key);
-    Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>progress: <span class="pl-pds">"</span></span> + (<span class="pl-st">double</span>)num / seq.Length);
-    Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>seq: <span class="pl-pds">"</span></span> + String.Join(<span class="pl-s1"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>, seq));
+    Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>key pressed: <span class="pl-pds">"</span></span> + key);
+    Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>progress: <span class="pl-pds">"</span></span> + (<span class="keywordt">double</span>)num / seq.Length);
+    Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>seq: <span class="pl-pds">"</span></span> + String.Join(<span class="string"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>, seq));
   },
 
   Fail = (str, seq) =&gt; {
-    Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>sequence failed<span class="pl-pds">"</span></span>);
+    Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>sequence failed<span class="pl-pds">"</span></span>);
   },
 
   Done = (str, seq) =&gt; {
-    Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>+30 lives ;)<span class="pl-pds">"</span></span>);
+    Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>+30 lives ;)<span class="pl-pds">"</span></span>);
   }
 });</pre></div>
 
-<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="pl-s1"><span class="pl-pds">"</span>o n c e<span class="pl-pds">"</span></span>, () =&gt; {
-  Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>This will only fire once.<span class="pl-pds">"</span></span>);
-  cheet.Disable(<span class="pl-s1"><span class="pl-pds">"</span>o n c e<span class="pl-pds">"</span></span>);
+<div class="highlight highlight-csharp"><pre>cheet.Map(<span class="string"><span class="pl-pds">"</span>o n c e<span class="pl-pds">"</span></span>, () =&gt; {
+  Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>This will only fire once.<span class="pl-pds">"</span></span>);
+  cheet.Disable(<span class="string"><span class="pl-pds">"</span>o n c e<span class="pl-pds">"</span></span>);
 });</pre></div>
 
-<div class="highlight highlight-csharp"><pre>dynamic sequences = <span class="pl-s">new</span> {
-  Cross = <span class="pl-s1"><span class="pl-pds">"</span>up down left right<span class="pl-pds">"</span></span>,
-  Circle = <span class="pl-s1"><span class="pl-pds">"</span>left up right down<span class="pl-pds">"</span></span>
+<div class="highlight highlight-csharp"><pre>dynamic sequences = <span class="keyword">new</span> {
+  Cross = <span class="string"><span class="pl-pds">"</span>up down left right<span class="pl-pds">"</span></span>,
+  Circle = <span class="string"><span class="pl-pds">"</span>left up right down<span class="pl-pds">"</span></span>
 };
 
 cheet.Map(sequences.Cross);
 cheet.Map(sequences.Circle);
 
 cheet.Done((str, seq) =&gt; {
-  <span class="pl-k">if</span> (str == sequences.Cross) {
-    Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>cross!<span class="pl-pds">"</span></span>);
-  } <span class="pl-k">else</span> <span class="pl-k">if</span> (str == sequences.Circle) {
-    Debug.WriteLine(<span class="pl-s1"><span class="pl-pds">"</span>circle!<span class="pl-pds">"</span></span>);
+  <span class="keyword">if</span> (str == sequences.Cross) {
+    Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>cross!<span class="pl-pds">"</span></span>);
+  } <span class="keyword">else</span> <span class="keyword">if</span> (str == sequences.Circle) {
+    Debug.WriteLine(<span class="string"><span class="pl-pds">"</span>circle!<span class="pl-pds">"</span></span>);
   }
 });</pre></div>
 
@@ -89,8 +92,7 @@ cheet.Done((str, seq) =&gt; {
 
 <p>WPF version:</p>
 
-<pre><code>Install-Package Cheet.Wpf
-</code></pre>
+<pre><code>Install-Package Cheet.Wpf</code></pre>
 
 <h3>
 <a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h3>
@@ -400,7 +402,7 @@ cancel the sequence.</p>
     </div>
     <footer>
       <p>Project maintained by <a href="https://github.com/jamiehumphries">jamiehumphries</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+      <p>Theme based on "modernist" by <a href="https://github.com/orderedlist">orderedlist</a></p>
     </footer>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
