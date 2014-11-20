@@ -1,4 +1,4 @@
-﻿namespace Cheet.Core
+﻿namespace CheetNET.Core
 {
     using System;
     using System.Collections.Generic;

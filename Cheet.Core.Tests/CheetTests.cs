@@ -1,4 +1,4 @@
-﻿namespace Cheet.Core.Tests
+﻿namespace CheetNET.Core.Tests
 {
     using FakeItEasy;
     using FluentAssertions;

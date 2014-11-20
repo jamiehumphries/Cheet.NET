@@ -1,6 +1,6 @@
 ﻿namespace CheetDemo
 {
-    using Cheet.Wpf;
+    using CheetNET.Wpf;
     using System;
 
     public partial class MainWindow

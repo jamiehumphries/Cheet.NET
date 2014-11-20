@@ -7,7 +7,7 @@
     <ProjectGuid>{9D584284-FBB4-489B-AA9E-BA8F75E89423}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cheet.Wpf.Tests</RootNamespace>
+    <RootNamespace>CheetNET.Wpf.Tests</RootNamespace>
     <AssemblyName>Cheet.Wpf.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -7,7 +7,7 @@
     <ProjectGuid>{256E915C-CDAB-489B-8E90-4135C6E5EC02}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cheet.Wpf</RootNamespace>
+    <RootNamespace>CheetNET.Wpf</RootNamespace>
     <AssemblyName>Cheet.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

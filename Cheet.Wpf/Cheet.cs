@@ -1,6 +1,6 @@
-﻿namespace Cheet.Wpf
+﻿namespace CheetNET.Wpf
 {
-    using global::Cheet.Core;
+    using CheetNET.Core;
     using System;
     using System.Text.RegularExpressions;
     using System.Windows.Input;

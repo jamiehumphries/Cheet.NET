@@ -7,7 +7,7 @@
     <ProjectGuid>{87537354-0C89-4FB8-9597-04C251E12743}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cheet.Core</RootNamespace>
+    <RootNamespace>CheetNET.Core</RootNamespace>
     <AssemblyName>Cheet.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -1,6 +1,6 @@
-﻿namespace Cheet.Wpf
+﻿namespace CheetNET.Wpf
 {
-    using global::Cheet.Core;
+    using CheetNET.Core;
     using System.Windows.Input;
 
     public class CheetCallbacks : CheetCallbacks<Key> {}

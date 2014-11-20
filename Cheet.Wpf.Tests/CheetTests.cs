@@ -1,4 +1,4 @@
-﻿namespace Cheet.Wpf.Tests
+﻿namespace CheetNET.Wpf.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;
