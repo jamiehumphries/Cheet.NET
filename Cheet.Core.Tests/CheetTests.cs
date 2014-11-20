@@ -85,6 +85,20 @@
             A.CallTo(DoneCallbackFor("a b c")).WithAnyArguments().MustNotHaveHappened();
         }
 
+        [Test]
+        public void Done_callback_only_invoked_for_mapped_sequence()
+        {
+            // Given
+            cheet.Map("a b c", callbacks.Done);
+            cheet.Map("x y z", () => { });
+
+            // When
+            cheet.SendSequence("x y z");
+
+            // Then
+            A.CallTo(DoneCallbackFor("a b c")).MustNotHaveHappened();
+        }
+
         [TestCase("a b c a b c", 2)]
         [TestCase("1 2 a b c 3 4 a b c 5 6", 2)]
         [TestCase("a b c a b c a b c", 3)]
