@@ -5,14 +5,19 @@
     using System.Text.RegularExpressions;
     using System.Windows.Input;
 
-    public class Cheet : Cheet<Key>
+    public interface ICheet : ICheet<Key>
+    {
+        void OnKeyDown(object sender, KeyEventArgs e);
+    }
+
+    public class Cheet : Cheet<Key>, ICheet
     {
         private static readonly Regex LetterKeyNamePattern = new Regex(@"^[a-z]$");
         private static readonly Regex NumberKeyNamePattern = new Regex(@"^[0-9]$");
         private static readonly Regex KeypadNumberKeyNamePattern = new Regex(@"^kp_[0-9]$");
         private static readonly Regex FunctionKeyNamePattern = new Regex(@"^(?:f[1-9]|f1[0-2])$");
 
-        public void OnKeyDown(object sender, KeyEventArgs e)
+        public virtual void OnKeyDown(object sender, KeyEventArgs e)
         {
             base.OnKeyDown(e.Key);
         }
