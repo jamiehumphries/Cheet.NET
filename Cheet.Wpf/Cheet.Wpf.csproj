@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Cheet.cs" />
     <Compile Include="CheetCallbacks.cs" />
+    <Compile Include="ICheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

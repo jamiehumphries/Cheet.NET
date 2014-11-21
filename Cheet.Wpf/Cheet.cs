@@ -5,11 +5,6 @@
     using System.Text.RegularExpressions;
     using System.Windows.Input;
 
-    public interface ICheet : ICheet<Key>
-    {
-        void OnKeyDown(object sender, KeyEventArgs e);
-    }
-
     public class Cheet : Cheet<Key>, ICheet
     {
         private static readonly Regex LetterKeyNamePattern = new Regex(@"^[a-z]$");

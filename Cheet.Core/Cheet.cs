@@ -5,19 +5,6 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    public interface ICheet<T>
-    {
-        void Map(string sequence);
-        void Map(string sequence, Action done);
-        void Map(string sequence, Action<string, T[]> done);
-        void Map(string sequence, CheetCallbacks<T> callbacks);
-        void Done(Action<string, T[]> callback);
-        void Next(Action<string, T, int, T[]> callback);
-        void Fail(Action<string, T[]> callback);
-        void Disable(string sequence);
-        void Reset(string sequence);
-    }
-
     public abstract class Cheet<T> : ICheet<T>
     {
         private readonly Dictionary<string, CheetSequence<T>> cheetSequences = new Dictionary<string, CheetSequence<T>>();
@@ -118,6 +105,9 @@
             }
         }
 
+        /// <summary>
+        ///     Implementing classes should call this method when a key has been pressed.
+        /// </summary>
         protected virtual void OnKeyDown(T key)
         {
             foreach (var cheetSequence in cheetSequences.Values.ToList())
@@ -126,6 +116,9 @@
             }
         }
 
+        /// <summary>
+        ///     Returns the key associated with a given key name.
+        /// </summary>
         protected abstract T GetKey(string keyName);
 
         private string NormalizeSequence(string sequence)

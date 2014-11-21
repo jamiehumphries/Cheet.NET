@@ -42,6 +42,7 @@
     <Compile Include="Cheet.cs" />
     <Compile Include="CheetCallbacks.cs" />
     <Compile Include="CheetSequence.cs" />
+    <Compile Include="ICheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
