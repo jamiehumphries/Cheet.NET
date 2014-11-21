@@ -1,5 +1,6 @@
 ﻿namespace CheetNET.Wpf.Tests
 {
+    using FakeItEasy;
     using FluentAssertions;
     using NUnit.Framework;
     using System;
@@ -8,15 +9,22 @@
     using System.Windows.Input;
     using System.Windows.Media;
 
+    public interface ITestCallbacks
+    {
+        void Done();
+    }
+
     [TestFixture]
     public class CheetTests
     {
         private TestCheet cheet;
+        private ITestCallbacks callbacks;
 
         [SetUp]
         public void SetUp()
         {
             cheet = new TestCheet();
+            callbacks = A.Fake<ITestCallbacks>();
         }
 
         [TestCaseSource("KeyNameMappings")]
@@ -42,14 +50,30 @@
             // Given
             var uiElement = new UIElement();
             uiElement.PreviewKeyDown += cheet.OnKeyDown;
-            var sequenceDone = false;
-            cheet.Map("a b c", () => { sequenceDone = true; });
+            cheet.Map("a b c", callbacks.Done);
 
             // When
             uiElement.SimulateKeyPresses(Key.A, Key.B, Key.C);
 
             // Then
-            sequenceDone.Should().BeTrue();
+            A.CallTo(() => callbacks.Done()).MustHaveHappened();
+        }
+
+        [Test]
+        [RequiresSTA]
+        public void Same_key_events_handled_multiple_times_does_not_prevent_sequence_completion()
+        {
+            // Given
+            var uiElement = new UIElement();
+            uiElement.PreviewKeyDown += cheet.OnKeyDown;
+            uiElement.PreviewKeyDown += cheet.OnKeyDown;
+            cheet.Map("a b c", callbacks.Done);
+
+            // When
+            uiElement.SimulateKeyPresses(Key.A, Key.B, Key.C);
+
+            // Then
+            A.CallTo(() => callbacks.Done()).MustHaveHappened();
         }
 
         public IEnumerable KeyNameMappings()
