@@ -460,7 +460,7 @@
 
         [TestCase("a  b  c")]
         [TestCase("   a b   c  ")]
-        public void Additional_spaces_are_ignored_when_disabling(string sequence)
+        public void Additional_spaces_are_ignored_when_resetting(string sequence)
         {
             // Given
             cheet.Map("a b c", callbacks.Done);
@@ -476,7 +476,7 @@
 
         [TestCase("a  b  c")]
         [TestCase("   a b   c  ")]
-        public void Additional_spaces_are_ignored_when_resetting(string sequence)
+        public void Additional_spaces_are_ignored_when_disabling(string sequence)
         {
             // Given
             cheet.Map("a b c", callbacks.Done);
