@@ -2,6 +2,8 @@
 
 ## easy easter eggs in .NET
 
+[![Build status](https://ci.appveyor.com/api/projects/status/819vr6gwqy75mfu3/branch/master?svg=true)](https://ci.appveyor.com/project/jamiehumphries/cheet-net/branch/master)
+
 This is a .NET port of the excellent [cheet.js](https://github.com/namuol/cheet.js) by [Louis Acresti (namuol)](https://github.com/namuol). I would recommend checking out that project if you need easter egg functionality in browser!
 
 ```csharp
